@@ -22,5 +22,6 @@ namespace PartyInvites.Models
         [Required(ErrorMessage = "Please specify whether yoll attend")]
         //Проверка на выбор из списка
         public bool? WillAttend { get; set; }
+        //применен nullable тип для того чтобы можно было применить сред-во Required
     }
 }

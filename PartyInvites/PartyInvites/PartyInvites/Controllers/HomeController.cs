@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using PartyInvites.Models;
 
@@ -13,10 +10,11 @@ namespace PartyInvites.Controllers
         // GET: /Home/
         public ActionResult Index()
         {
-            int hour = DateTime.Now.Hour;
+            var hour = DateTime.Now.Hour;
             ViewBag.Greeting = hour < 12 ? "Good Morning" : "Good Afternoon";
             return View();
         }
+
         [HttpGet]
         public ViewResult RsvpForm()
         {
@@ -26,9 +24,15 @@ namespace PartyInvites.Controllers
         [HttpPost]
         public ViewResult RsvpForm(GuestResponse guestResponse)
         {
-            //Чтото сделать: отправить guestResponse по эл. почте организатору 
-            //вечеринки
-            return View("Thanks", guestResponse);
+            //Проверка правильности введенных данных
+            if (ModelState.IsValid)
+            {
+                //Чтото сделать: отправить guestResponse по эл. почте организатору 
+                //вечеринки
+                return View("Thanks", guestResponse);
+            }
+            // В случае ошибки данных 
+            return View();
         }
-	}
+    }
 }
