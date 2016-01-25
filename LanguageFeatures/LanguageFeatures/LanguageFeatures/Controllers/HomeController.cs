@@ -51,5 +51,25 @@ namespace LanguageFeatures.Controllers
 
             return View("Result", (object) stringArray[1]);
         }
+
+        public ViewResult UseExtension()
+        {
+            //Создать и заполнить обьект ShoppingCart
+            ShoppingCart cart=new ShoppingCart
+            {
+                Products = new List<Product>
+                {
+                    new Product{Name="Kayak", Price = 275M},
+                    new Product{Name="LifeJacket", Price=48.95M},
+                    new Product{Name="Soccer ball",Price = 19.50M},
+                    new Product{Name="Corner flag",Price=34.95M}
+                }
+            };
+            // Получить общую стоимость товаров в корзине
+            decimal cartTotal = cart.TotalPrices();
+
+            return View("Result",
+                (object) String.Format("Total: {0:c}", cartTotal));
+        }
     }
 }
