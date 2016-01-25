@@ -8,20 +8,48 @@
 
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width"/>
+    <link href="~/Content/bootstrap.css" rel="stylesheet"/>
+    <link href="~/Content/bootstrap-theme.css" rel="stylesheet"/>
     <title>Thanks</title>
+    <style>
+        body { background-color: #F1F1F1; }
+    </style>
 </head>
 <body>
 <div>
-    <h1>Thank you, @Model.Name</h1>
-    @if (Model.WillAttend == true)
-    {
-        @:Its great that youre coming. The drinks are alredy in the fridge!
+    @{
+        try
+        {
+            //отправка емаил о результатах
+            WebMail.SmtpServer = "smtp.example.com";
+            WebMail.SmtpPort = 587;
+            WebMail.EnableSsl = true;
+            WebMail.UserName = "mySmtpUsername";
+            WebMail.Password = "mySmtpPassword";
+            WebMail.From = "rsvps@example.com";
+            WebMail.Send("party-host@example.com", "RSVP Notification",
+                Model.Name + "is"+ ((Model.WillAttend??false)? "" : "not")+"attending");
+        }
+        catch (Exception)
+        {
+  
+            <b>Sorry-we couldn't send the email to confirm your RSVP</b>
+        }
     }
-    else
-    {
-        @:Sorry to hear that you cant make it, but thanks for letting us know.
-    }
+    <div class="text-center">
+        <h1>Thank you, @Model.Name</h1>
+        <div class="lead">
+            @if (Model.WillAttend == true)
+            {
+                @:Its great that youre coming. The drinks are alredy in the fridge!
+            }
+            else
+            {
+                @:Sorry to hear that you cant make it, but thanks for letting us know.
+            }
+        </div>
+    </div>
 </div>
 </body>
 </html>
