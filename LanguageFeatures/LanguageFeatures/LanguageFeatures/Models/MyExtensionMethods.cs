@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace LanguageFeatures.Models
 {
@@ -13,6 +14,15 @@ namespace LanguageFeatures.Models
             }
             return total;
         }
+        public static decimal TotalPricesWithLyambda(this IEnumerable<Product> productEnum)
+        {
+            decimal total = 0;
+            foreach (Product product in productEnum)
+            {
+                total += product.Price;
+            }
+            return total;
+        }
 
         public static IEnumerable<Product> FilterByCategory(this IEnumerable<Product>
             productEnum, string categoryParam)
@@ -20,6 +30,18 @@ namespace LanguageFeatures.Models
             foreach (Product product in productEnum)
             {
                 if(product.Category == categoryParam)
+                {
+                    yield return product;
+                }
+            }
+        }
+
+        public static IEnumerable<Product> FilterByLyambda(this IEnumerable<Product>
+            productsEnum, Func<Product,bool> selectorParam )
+        {
+            foreach (Product product in productsEnum)
+            {
+                if (selectorParam(product))
                 {
                     yield return product;
                 }
