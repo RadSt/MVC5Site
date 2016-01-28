@@ -126,10 +126,10 @@ namespace LanguageFeatures.Controllers
                         Price = 34.95M}
                 }
             };
-            //Лямбда выражение
-            Func<Product, bool> categoryFilter = product => product.Category=="Socer";
             decimal total = 0;
-            foreach (Product product in products.FilterByLyambda(categoryFilter))
+            //Лямда выражение в foreach
+            foreach (Product product in products.FilterByLyambda(product => 
+                product.Category == "Socer"||product.Price>20))
             {
                 total += product.Price;
             }
