@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Web.Mvc;
 using LanguageFeatures.Models;
 
@@ -135,6 +136,26 @@ namespace LanguageFeatures.Controllers
             }
 
             return View("Result", (object) String.Format("Total: {0:c}", total));
+        }
+
+        public ViewResult CreateAnonArray()
+        {
+            //Обьявление массива без явного указания типа
+            var oddsAndEnds = new[]
+            {
+                new {Name = "MVC", Cattegory = "Pattern"},
+                new {Name = "Hat", Cattegory = "Clothing"},
+                new {Name = "Apple", Cattegory = "Fruit"}
+            };
+
+            StringBuilder result=new StringBuilder();
+
+            foreach (var item in oddsAndEnds)
+            {
+                result.Append(item.Name).Append(" ");
+            }
+
+            return View("Result", (object) result.ToString());
         }
     }
 }
