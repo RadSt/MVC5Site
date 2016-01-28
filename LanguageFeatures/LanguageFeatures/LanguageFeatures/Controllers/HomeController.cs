@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using LanguageFeatures.Models;
 
@@ -75,12 +76,37 @@ namespace LanguageFeatures.Controllers
                 new Product {Name = "Corner flag", Price = 34.95M}
             };
             // Получить общую стоимость товаров в корзине
-            decimal cartTotal = products.TotalPrices();
-            decimal arrayTotal = productArray.TotalPrices();
+            var cartTotal = products.TotalPrices();
+            var arrayTotal = productArray.TotalPrices();
 
             return View("Result",
                 (object) string.Format("CartTotal: {0:c}, ArrayTotal: {1:c}"
-                , cartTotal,arrayTotal));
+                    , cartTotal, arrayTotal));
+        }
+
+        public ViewResult UseFilterExtensionMethod()
+        {
+            //Использование фильтрующего метода
+            IEnumerable<Product> products = new ShoppingCart
+            {
+                Products = new List<Product>
+                {
+                    new Product {Name = "Kayak", Category = "Watersports", 
+                        Price = 275M},
+                    new Product {Name = "LifeJacket", Category = "Watersports",
+                        Price = 48.95M},
+                    new Product {Name = "Soccer ball",Category = "Soccer"
+                        , Price = 19.50M},
+                    new Product {Name = "Corner flag",Category = "Soccer",
+                        Price = 34.95M}
+                }
+            };
+            decimal total = 0;
+            foreach (Product product in products.FilterByCategory("Soccer"))
+            {
+                total += product.Price;
+            }
+            return View("Result", (object) String.Format("Total: {0}", total));
         }
     }
 }
