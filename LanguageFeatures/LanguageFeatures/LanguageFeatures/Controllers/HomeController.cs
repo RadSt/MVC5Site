@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using LanguageFeatures.Models;
@@ -92,50 +92,84 @@ namespace LanguageFeatures.Controllers
             {
                 Products = new List<Product>
                 {
-                    new Product {Name = "Kayak", Category = "Watersports", 
-                        Price = 275M},
-                    new Product {Name = "LifeJacket", Category = "Watersports",
-                        Price = 48.95M},
-                    new Product {Name = "Soccer ball",Category = "Soccer"
-                        , Price = 19.50M},
-                    new Product {Name = "Corner flag",Category = "Soccer",
-                        Price = 34.95M}
+                    new Product
+                    {
+                        Name = "Kayak",
+                        Category = "Watersports",
+                        Price = 275M
+                    },
+                    new Product
+                    {
+                        Name = "LifeJacket",
+                        Category = "Watersports",
+                        Price = 48.95M
+                    },
+                    new Product
+                    {
+                        Name = "Soccer ball",
+                        Category = "Soccer"
+                        ,
+                        Price = 19.50M
+                    },
+                    new Product
+                    {
+                        Name = "Corner flag",
+                        Category = "Soccer",
+                        Price = 34.95M
+                    }
                 }
             };
             decimal total = 0;
-            foreach (Product product in products.FilterByCategory("Soccer"))
+            foreach (var product in products.FilterByCategory("Soccer"))
             {
                 total += product.Price;
             }
-            return View("Result", (object) String.Format("Total: {0}", total));
+            return View("Result", (object) string.Format("Total: {0}", total));
         }
 
-        public ViewResult UseFilterExtensionFumMethod( )
+        public ViewResult UseFilterExtensionFumMethod()
         {
             //Создать и заполнить обьект shoppingCard
             IEnumerable<Product> products = new ShoppingCart
             {
                 Products = new List<Product>
                 {
-                    new Product {Name = "Kayak", Category = "Watersports", 
-                        Price = 275M},
-                    new Product {Name = "LifeJacket", Category = "Watersports",
-                        Price = 48.95M},
-                    new Product {Name = "Soccer ball",Category = "Soccer"
-                        , Price = 19.50M},
-                    new Product {Name = "Corner flag",Category = "Soccer",
-                        Price = 34.95M}
+                    new Product
+                    {
+                        Name = "Kayak",
+                        Category = "Watersports",
+                        Price = 275M
+                    },
+                    new Product
+                    {
+                        Name = "LifeJacket",
+                        Category = "Watersports",
+                        Price = 48.95M
+                    },
+                    new Product
+                    {
+                        Name = "Soccer ball",
+                        Category = "Soccer"
+                        ,
+                        Price = 19.50M
+                    },
+                    new Product
+                    {
+                        Name = "Corner flag",
+                        Category = "Soccer",
+                        Price = 34.95M
+                    }
                 }
             };
             decimal total = 0;
             //Лямда выражение в foreach
-            foreach (Product product in products.FilterByLyambda(product => 
-                product.Category == "Socer"||product.Price>20))
+            foreach (var product in products.FilterByLyambda(product =>
+                product.Category == "Socer" || product.Price > 20))
             {
                 total += product.Price;
             }
 
-            return View("Result", (object) String.Format("Total: {0:c}", total));
+            return View("Result", (object) string.Format("Total: {0:c}", total));
         }
 
         public ViewResult CreateAnonArray()
@@ -148,13 +182,66 @@ namespace LanguageFeatures.Controllers
                 new {Name = "Apple", Cattegory = "Fruit"}
             };
 
-            StringBuilder result=new StringBuilder();
+            var result = new StringBuilder();
 
             foreach (var item in oddsAndEnds)
             {
                 result.Append(item.Name).Append(" ");
             }
 
+            return View("Result", (object) result.ToString());
+        }
+
+        public ViewResult FindProducts()
+        {
+            //Использование LINQ
+            Product[] products =
+            {
+                new Product
+                {
+                    Name = "Kayak",
+                    Category = "Watersports",
+                    Price = 275M
+                },
+                new Product
+                {
+                    Name = "LifeJacket",
+                    Category = "Watersports",
+                    Price = 48.95M
+                },
+                new Product
+                {
+                    Name = "Soccer ball",
+                    Category = "Soccer"
+                    ,
+                    Price = 19.50M
+                },
+                new Product
+                {
+                    Name = "Corner flag",
+                    Category = "Soccer",
+                    Price = 34.95M
+                }
+            };
+            //LINQ NOTATION
+            //var foundProduct = from match in products
+            //    orderby match.Price descending
+            //    select new {match.Name, match.Price};
+            //LINQ DOT NOTATION
+            var foundProduct = products.OrderByDescending(e => e.Price)
+                .Take(3)
+                .Select(e => new {e.Name, e.Price});
+
+            int count = 0;
+            StringBuilder result=new StringBuilder();
+            foreach (var product in foundProduct)
+            {
+                result.AppendFormat("Price {0:c}", product.Price);
+                if (++count==3)
+                {
+                    break;
+                }
+            }
             return View("Result", (object) result.ToString());
         }
     }
