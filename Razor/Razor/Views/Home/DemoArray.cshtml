@@ -1,4 +1,5 @@
-﻿@model Razor.Models.Product[]
+﻿@using Razor.Models
+@model  Product[]
 @{
     ViewBag.Title = "DemoArray";
 }
@@ -10,7 +11,7 @@
         <tr><td>Product</td><td>Price</td></tr>
         </thead>
         <tbody>
-        @foreach (Razor.Models.Product p in Model)
+        @foreach (Product p in Model)
         {
             <tr>
                 <td>@p.Name</td>
