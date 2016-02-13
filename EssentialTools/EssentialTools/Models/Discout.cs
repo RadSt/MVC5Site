@@ -6,9 +6,10 @@
     }
     public class DefaultDiscoutHelper:IDiscountHelper
     {
+        public decimal DiscountSize { get; set; }
         public decimal ApplyDiscount(decimal totalParam)
         {
-            return (totalParam - (10m/100m*totalParam));
+            return (totalParam-(DiscountSize/100m*totalParam));
         }
     }
 }
