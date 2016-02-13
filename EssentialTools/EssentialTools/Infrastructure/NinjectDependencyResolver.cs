@@ -30,7 +30,7 @@ namespace EssentialTools.Infrastructure
         {
             kernel.Bind<IValueCalculator>().To<LinqValueCalculator>();
             kernel.Bind<IDiscountHelper>().To<DefaultDiscoutHelper>().
-                WithPropertyValue("DiscountSize",50M);
+                WithConstructorArgument("discountParam",50M);
         }
     }
 }
