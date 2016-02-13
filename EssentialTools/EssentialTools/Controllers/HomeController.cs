@@ -11,6 +11,8 @@ namespace EssentialTools.Controllers
     public class HomeController : Controller
     {
         // GET: Home
+        // обьявление интерфейса для Ninject
+        private IValueCalculator calc;
         private Product[] products=
         {
             new Product{Name="Kayak",Category = "Watersport",Price = 275M},
@@ -18,13 +20,13 @@ namespace EssentialTools.Controllers
             new Product{Name="Soccer Ball",Category = "Soccer",Price = 19.50M},
             new Product{Name="Corner flag",Category = "Soccer",Price = 34.95M} 
         };
-        public ActionResult Index()
+        public HomeController(IValueCalculator calcParam)
         {
             // Добавление интерфейса с Ninject
-            IKernel ninjectKernel=new StandardKernel();
-            ninjectKernel.Bind<IValueCalculator>().To<LinqValueCalculator>();
-            IValueCalculator calc = ninjectKernel.Get<IValueCalculator>();
-
+            calc = calcParam;
+        }
+        public ActionResult Index()
+        {
             ShoppingCart cart=new ShoppingCart(calc){Products = products};
             decimal totalValue = cart.CalculateProductTotal();
             return View(totalValue);
