@@ -20,7 +20,7 @@ namespace EssentialTools.Controllers
             new Product{Name="Soccer Ball",Category = "Soccer",Price = 19.50M},
             new Product{Name="Corner flag",Category = "Soccer",Price = 34.95M} 
         };
-        public HomeController(IValueCalculator calcParam)
+        public HomeController(IValueCalculator calcParam, IValueCalculator calcPram2)
         {
             // Добавление интерфейса с Ninject
             calc = calcParam;
