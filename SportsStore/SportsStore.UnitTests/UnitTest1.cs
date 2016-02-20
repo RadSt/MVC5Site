@@ -112,7 +112,7 @@ namespace SportsStore.UnitTests
             controller.PageSize = 3;
 
             //Act
-            Product[] result = ((ProductListViewModel) controller.List("Cat2", 1)
+            Product[] result = ((ProductListViewModel)controller.List("Cat2", 1)
                 .Model).Products.ToArray();
 
             //Assert
@@ -121,5 +121,31 @@ namespace SportsStore.UnitTests
             Assert.IsTrue(result[1].Name=="P4" && result[1].Category=="Cat2");
 
         }
+
+        [TestMethod]
+        public void Can_Create_categories()
+        {
+            //Arrange
+            Mock<IProductRepository> mock=new Mock<IProductRepository>();
+            mock.Setup(m => m.Products).Returns(new Product[]
+            {
+                new Product{ProductID = 1, Name = "P1", Category = "Oranges"},
+                new Product{ProductID = 2, Name = "P2", Category = "Apples"},
+                new Product{ProductID = 3,Name = "P3", Category = "Cucumber"},
+                new Product{ProductID = 4, Name = "P4",Category = "Apples"},
+                new Product{ProductID = 5, Name = "P5", Category = "Oranges"} 
+            });
+            NavController target=new NavController(mock.Object);
+
+            //Act
+            string[] results = ((IEnumerable<string>)target.Menu().Model).ToArray();
+
+            //Assert
+            Assert.AreEqual(results.Length,3);
+            Assert.AreEqual(results[0],"Apples");
+            Assert.AreEqual(results[1],"Cucumber");
+            Assert.AreEqual(results[2],"Oranges");
+        }
+
     }
 }
