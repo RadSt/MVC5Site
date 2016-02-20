@@ -19,7 +19,7 @@ namespace SportsStore.WebUI.Controllers
 
         public PartialViewResult Menu()
         {
-            IEnumerable<String> categories = repository.Products
+            IEnumerable<string> categories = repository.Products
                 .Select(x => x.Category)
                 .Distinct()
                 .OrderBy(x => x);
