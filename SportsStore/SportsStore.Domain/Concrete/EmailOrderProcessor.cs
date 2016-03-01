@@ -80,6 +80,12 @@ namespace SportsStore.Domain.Concrete
                     emailSettings.MailToAdress,//Кому
                     "New order submitted!",//Тема
                     body.ToString());//Тело
+
+                if (emailSettings.WriteAsFile)
+                {
+                    mailMessage.BodyEncoding=Encoding.ASCII;
+                }
+                smtpclient.Send(mailMessage);
             }
         }
     }
