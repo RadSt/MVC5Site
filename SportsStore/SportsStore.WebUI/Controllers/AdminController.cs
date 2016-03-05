@@ -39,8 +39,13 @@ namespace SportsStore.WebUI.Controllers
                     , product.Name);
                 return RedirectToAction("Index");
             }
-            //что то не так асо значением данных
+            //что то не так со значением данных
             return View(product);
+        }
+
+        public ViewResult Create()
+        {
+            return View("Edit", new Product());
         }
     }
 }
